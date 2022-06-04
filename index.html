@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shuffletify</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+
+<body onload="onPageLoad()">
+    <div class="flex-container">
+        <div class="main-logo">
+            <img src="images/spotifylogo.png" alt="spotify-logo" width="50px" height="50px">
+        </div>
+        <div class="header-section">
+            <h1>Shuffletify</h1>
+            <h2>Shuffle your Spotify to create a new playlist!</h2>
+            <div class="login">
+                <a class="login-btn" href="/login">Login with Spotify</a>
+            </div>
+        </div>
+
+        <div class="separator">
+            <hr>
+        </div>
+        <div class="mb-3">
+            <label for="clientId" class="form-label">Client ID</label>
+            <input type="text" class="form-control" id="clientId" placeholder="">
+        </div>
+
+        <div class="mb-3">
+            <label for="clientSecret" class="form-label">Client Secret</label>
+            <input type="text" class="form-control" id="clientSecret" placeholder="">
+        </div>
+        
+        <input class="btn btn-primary btn-lg" type="button" onclick="requestAuthorization()" value="Request Authorization"><br/>
+        <p>Created by: <a>Alejandro Palmar</a> </p>
+        
+        <footer class="page-footer">
+            <ul>
+                <li><a href="https://github.com/alejoseed">Github</a></li>
+                <li><a href="">Discord</a></li>
+            </ul>
+        </footer>
+    </div>
+</body> 
+
+</html>
