@@ -18,24 +18,14 @@
             <h1>Shuffletify</h1>
             <h2>Shuffle your Spotify to create a new playlist!</h2>
             <div class="login">
-                <a class="login-btn" href="/login">Login with Spotify</a>
+                <a class="login-btn" onclick="requestAuthorization()">Login with Spotify</a>
             </div>
         </div>
 
         <div class="separator">
             <hr>
         </div>
-        <div class="mb-3">
-            <label for="clientId" class="form-label">Client ID</label>
-            <input type="text" class="form-control" id="clientId" placeholder="">
-        </div>
 
-        <div class="mb-3">
-            <label for="clientSecret" class="form-label">Client Secret</label>
-            <input type="text" class="form-control" id="clientSecret" placeholder="">
-        </div>
-        
-        <input class="btn btn-primary btn-lg" type="button" onclick="requestAuthorization()" value="Request Authorization"><br/>
         <p>Created by: <a>Alejandro Palmar</a> </p>
         
         <footer class="page-footer">
@@ -48,3 +38,16 @@
 </body> 
 
 </html>
+
+<!-- 
+    <a href='http://www.google.com' onclick='return check()'>check</a>
+
+<script type='text/javascript'>
+
+function check()
+{
+    return false;
+}
+
+</script> 
+-->
