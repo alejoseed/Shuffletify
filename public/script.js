@@ -1,61 +1,89 @@
-let redirect_uri = "http://127.0.0.1:5500/public/index.html";
+$(document).ready(function () {
+    var stateKey = 'spotify_auth_state';
+    let user_id = "";
+    const AUTHORIZE = "https://accounts.spotify.com/authorize";
 
-let access_token = "";
-let refresh_token = "";
-
-
-const AUTHORIZE = "https://accounts.spotify.com/authorize";
-
-
-function onPageLoad(){
-    client_id = localStorage.getItem("client_id");
-    client_secret = localStorage.getItem("client_secret");
-
-    if (window.location.search.length > 0){
-        handleRedirect()
+    function getHashParams(){
+        var hashParams = {};
+        var e, r = /([^&;=]+)=?([^&;]*)/g,
+            q = window.location.hash.substring(1);
+        while ( e = r.exec(q)) {
+        hashParams[e[1]] = decodeURIComponent(e[2]);
+        }
+        return hashParams;
     }
-}
 
-function handleRedirect(){
-    fetchAccessToken();
-    window.history.pushState("", "", redirect_uri);
-}
-
-function getCode(){
-    let code = null;
-    const queryString = window.location.search;
-    if (queryString.length > 0){
-        const params = new URLSearchParams(queryString);
-        code = params.get("code");
+    function getPlaylists(){
+        $.ajax({
+            url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
+            headers: {
+                'Authorization': 'Bearer ' + access_token
+            },
+            success: function(response) {
+                console.log(response);
+            }
+        });
     }
-    return code;
-}
 
-function fetchAccessToken(){
-/*
-    My implementation did not work, trying to come up with one that works.
-    So far, I think I will have to implement it with PKCE as the website said because I'm 
-    Gonna be running this on a website that is not a server.
-    Another thing I can do is use firebase but this is not react so idk
-*/
-}
+    let generateRandomString = function(length) {
+        var text = '';
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    
+        for (var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
+    };
 
-function refreshAccessToken(){
-// Gotta come up with a way to refresh the access token
-}
+    let params = getHashParams();
 
+    let access_token = params.access_token,
+        error = params.error;
 
-function requestAuthorization(){
-    let url = AUTHORIZE;
-    url += "?client_id=0e5a68c331404560875b8c350b71038e";
-    url += "&response_type=code";
-    url += "&redirect_uri=" + encodeURI(redirect_uri);
-    url += "&show_dialog=true";
-    url += "&scope=user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
-    window.location.href = url; // Show Spotify's authorization screen
-}
+    if(error){
+        console.log('There was an error during the authentication');
+    }
+     else {
+        if (access_token) {
+        $.ajax({
+            url: 'https://api.spotify.com/v1/me',
+            headers: {
+                'Authorization': 'Bearer ' + access_token
+            },
+            success: function(response) {
+                $('#login-menu').hide();
+                $('#loggedin').show();
+                user_id = response.id;
+            }
+        });
+        } else {
+            $('#login').show();
+            $('#loggedin').hide();
+        }
 
+        document.getElementById('login-btn').addEventListener('click', function() {
+            let client_id = '0e5a68c331404560875b8c350b71038e';
+            let redirect_uri = "http://127.0.0.1:5500/public/index.html";
 
-$(document).ready(function(){
-    requestAuthorization();
+            let state = generateRandomString(16);
+
+            localStorage.setItem(stateKey, state);
+            let scope = 'user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private';
+            
+            let url = AUTHORIZE;
+            url += "?response_type=token";
+            url += "&client_id=" + encodeURIComponent(client_id);
+            url += "&scope=" + encodeURIComponent(scope);
+            url += "&redirect_uri=" + encodeURIComponent(redirect_uri);
+            url += "&state=" + encodeURIComponent(state);
+            url += "&show_dialog=true";
+            window.location.href = url;
+        }, false);
+    }
+    
+    document.getElementById('retrieve_playlists').addEventListener('click', function() {
+        getPlaylists();
+    }, false);
+            
+//////
 });

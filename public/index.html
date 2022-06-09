@@ -6,24 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shuffletify</title>
     <link rel="stylesheet" href="style.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="script.js"></script>
+
 </head>
 
-<body onload="onPageLoad()">
+<body>
     <div class="flex-container">
-        <div class="main-logo">
-            <img src="images/spotifylogo.png" alt="spotify-logo" width="50px" height="50px">
-        </div>
-        <div class="header-section">
-            <h1>Shuffletify</h1>
-            <h2>Shuffle your Spotify to create a new playlist!</h2>
-            <div class="login">
-                <a class="login-btn" onclick="requestAuthorization()">Login with Spotify</a>
+        <div id ="login-menu">
+            <div class="main-logo">
+                <img src="images/spotifylogo.png" alt="spotify-logo" width="50px" height="50px">
+            </div>
+            <div class="header-section">
+                <h1>Shuffletify</h1>
+                <h2>Shuffle your Spotify to create a new playlist!</h2>
+                <div class="login">
+                    <a id="login-btn">Login with Spotify</a>
+                </div>
             </div>
         </div>
-
-        <div class="separator">
-            <hr>
+        
+        <div id="loggedin" style="display: none;">
+            <div class="main-logo">
+                <img src="images/spotifylogo.png" alt="spotify-logo" width="50px" height="50px">
+            </div>
+            <div class="header-section">
+                <h1>Shuffletify</h1>
+                <h2>Shuffle your Spotify to create a new playlist!</h2>
+                <div id="options">
+                    <button class="tbd==" id="retrieve_playlists">retrieve playlists</button>
+                    <button class="tbd==" id="medium_term">Do stuff</button>
+                    <button class="tbd==" id="long_term">Do Stuff</button>
+                </div>
+            </div>
+            <div id="lorem"></div>
         </div>
 
         <p>Created by: <a>Alejandro Palmar</a> </p>
@@ -38,16 +55,3 @@
 </body> 
 
 </html>
-
-<!-- 
-    <a href='http://www.google.com' onclick='return check()'>check</a>
-
-<script type='text/javascript'>
-
-function check()
-{
-    return false;
-}
-
-</script> 
--->

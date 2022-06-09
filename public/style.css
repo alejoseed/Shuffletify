@@ -10,9 +10,6 @@ body{
     overflow: hidden;
 }
 
-
-
-
 .flex-container {
     flex: 1;
     align-items: center;
@@ -109,24 +106,20 @@ body{
     }
 }
 
-.header-section .login{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #1db954;
-    padding: 15px 15px;
-    font-size: 20px;
-    flex-basis: 100%;
-    cursor: pointer;
-    border-radius: 15px;
-    text-decoration: none;
-    margin: auto;
-    max-width: 295px;
-}
-
-.header-section .login .login-btn{
-    text-decoration: none;
-    color: black 
+#login-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1db954;
+  padding: 15px 15px;
+  font-size: 20px;
+  flex-basis: 100%;
+  cursor: pointer;
+  border-radius: 15px;
+  margin: auto;
+  max-width: 295px;
+  text-decoration: none;
+  color: black 
 }
 
 
