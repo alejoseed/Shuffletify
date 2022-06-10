@@ -20,11 +20,20 @@ $(document).ready(function () {
                 'Authorization': 'Bearer ' + access_token
             },
             success: function(response) {
-                console.log(response);
+                let playlists = response.items;
+                let select = document.getElementById("playlist-options");
+                for (let i = 0; i < playlists.length; i++) {
+                    let option = document.createElement("option");
+                    option.text = playlists[i].name;
+                    select.add(option, 0)
+            }
             }
         });
     }
-
+    let selectMenu = document.getElementById("playlist-options");
+    function fetchPlaylist(){
+        
+    }
     let generateRandomString = function(length) {
         var text = '';
         var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -54,6 +63,7 @@ $(document).ready(function () {
                 $('#login-menu').hide();
                 $('#loggedin').show();
                 user_id = response.id;
+                getPlaylists();
             }
         });
         } else {
@@ -81,9 +91,9 @@ $(document).ready(function () {
         }, false);
     }
     
-    document.getElementById('retrieve_playlists').addEventListener('click', function() {
-        getPlaylists();
-    }, false);
+    //document.getElementById('retrieve_playlists').addEventListener('click', function() {
+    //    getPlaylists();
+    //}, false);
             
 //////
 });
