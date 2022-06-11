@@ -126,7 +126,7 @@ $(document).ready(function () {
             let state = generateRandomString(16);
 
             localStorage.setItem(stateKey, state);
-            let scope = 'playlist-modify-public playlist-modify-private playlist-read-private user-library-modify playlist-read-collaborative '
+            let scope = 'playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative '
             
             let url = AUTHORIZE;
             url += "?response_type=token";
