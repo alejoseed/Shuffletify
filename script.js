@@ -121,7 +121,7 @@ $(document).ready(function () {
 
         document.getElementById('login-btn').addEventListener('click', function() {
             let client_id = '0e5a68c331404560875b8c350b71038e';
-            let redirect_uri = "http://127.0.0.1:5500/index.html";
+            let redirect_uri = "https://alejoseed.github.io/Shuffletify/index.html";
 
             let state = generateRandomString(16);
 
