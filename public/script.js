@@ -1,8 +1,13 @@
 $(document).ready(function () {
-    var stateKey = 'spotify_auth_state';
+    let stateKey = 'spotify_auth_state';
     let user_id = "";
     const AUTHORIZE = "https://accounts.spotify.com/authorize";
+    let playlists = null;
+    let playlist_id = "";
+    let playlist_index = null;
+    let snapID = "";
 
+    
     function getHashParams(){
         var hashParams = {};
         var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -20,20 +25,63 @@ $(document).ready(function () {
                 'Authorization': 'Bearer ' + access_token
             },
             success: function(response) {
-                let playlists = response.items;
+                playlists = response.items;
                 let select = document.getElementById("playlist-options");
                 for (let i = 0; i < playlists.length; i++) {
                     let option = document.createElement("option");
-                    option.text = playlists[i].name;
-                    select.add(option, 0)
+                    //check the onwer of the playlist to display only modifiable playlists
+                    if (playlists[i].owner.id == user_id) {
+                        option.text = playlists[i].name;
+                        select.add(option, 0)
+                    }
             }
             }
         });
     }
-    let selectMenu = document.getElementById("playlist-options");
-    function fetchPlaylist(){
-        
+
+    // Save the playlist the user wanna shuffle and get the ID
+
+    document.getElementById("shuffle-btn").addEventListener("click", function(){
+        console.log($("#playlist-options option:selected").text());
+        for(let i = 0; i < playlists.length; i++){
+            if($("#playlist-options option:selected").text() == playlists[i].name){
+                playlist_id = playlists[i].id;
+                playlist_index = i;
+                break;
+            }
+        }
+        shufflePlaylist();
+    });
+
+    // Decided to use xhr instead of $.ajax because it was a simplier way to get the result
+
+    function shufflePlaylist(){
+        let currentIndex = playlists[playlist_index].tracks.total, randomIndex;
+        while (0 !== currentIndex) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex --;
+            var url = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("PUT", url);
+
+            xhr.setRequestHeader("Accept", "application/json");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                console.log(xhr.status);
+                console.log(xhr.responseText);
+              
+   }};
+
+    let data = '{"range_start":' + currentIndex + "," + '"insert_before":' +  randomIndex + "," + '"range_length":2}';
+    xhr.send(data);
+    };
+    alert("Playlist successfully shuffled!");
     }
+        
     let generateRandomString = function(length) {
         var text = '';
         var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -78,7 +126,7 @@ $(document).ready(function () {
             let state = generateRandomString(16);
 
             localStorage.setItem(stateKey, state);
-            let scope = 'user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private';
+            let scope = 'playlist-modify-public playlist-modify-private playlist-read-private user-library-modify playlist-read-collaborative '
             
             let url = AUTHORIZE;
             url += "?response_type=token";
@@ -90,10 +138,4 @@ $(document).ready(function () {
             window.location.href = url;
         }, false);
     }
-    
-    //document.getElementById('retrieve_playlists').addEventListener('click', function() {
-    //    getPlaylists();
-    //}, false);
-            
-//////
 });
