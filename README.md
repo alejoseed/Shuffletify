@@ -1,4 +1,7 @@
 # Shuffletify
+
+[Website](https://alejoseed.github.io/Shuffletify/)
+
 Creates a random playlist based on a previously created list of songs 
 
 ## Why should I use it:
