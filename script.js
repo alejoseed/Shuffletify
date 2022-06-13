@@ -6,7 +6,7 @@ $(document).ready(function () {
     let playlist_id = "";
     let playlist_index = null;
     let userName = "";
-    
+   
     function getHashParams(){
         let hashParams = {};
         let e, r = /([^&;=]+)=?([^&;]*)/g,
