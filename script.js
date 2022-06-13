@@ -5,12 +5,11 @@ $(document).ready(function () {
     let playlists = null;
     let playlist_id = "";
     let playlist_index = null;
-    let snapID = "";
-
+    let userName = "";
     
     function getHashParams(){
-        var hashParams = {};
-        var e, r = /([^&;=]+)=?([^&;]*)/g,
+        let hashParams = {};
+        let e, r = /([^&;=]+)=?([^&;]*)/g,
             q = window.location.hash.substring(1);
         while ( e = r.exec(q)) {
         hashParams[e[1]] = decodeURIComponent(e[2]);
@@ -26,17 +25,19 @@ $(document).ready(function () {
             },
             success: function(response) {
                 playlists = response.items;
+                console.log(playlists);
                 let select = document.getElementById("playlist-options");
                 for (let i = 0; i < playlists.length; i++) {
                     let option = document.createElement("option");
                     //check the onwer of the playlist to display only modifiable playlists
-                    if (playlists[i].owner.id == user_id) {
+                    if (playlists[i].owner.id == user_id || playlists[i].collaborative == true || playlists[i].owner == userName) {
                         option.text = playlists[i].name;
                         select.add(option, 0)
                     }
             }
             }
         });
+
     }
 
     // Save the playlist the user wanna shuffle and get the ID
@@ -54,39 +55,42 @@ $(document).ready(function () {
     });
 
     // Decided to use xhr instead of $.ajax because it was a simplier way to get the result
+    // of the request.
 
     function shufflePlaylist(){
         let currentIndex = playlists[playlist_index].tracks.total, randomIndex;
         while (0 !== currentIndex) {
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex --;
-            var url = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks";
-
-            var xhr = new XMLHttpRequest();
+            let url = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks";
+            
+            
+            let xhr = new XMLHttpRequest();
             xhr.open("PUT", url);
-
+            
             xhr.setRequestHeader("Accept", "application/json");
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-
+            
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                 console.log(xhr.status);
                 console.log(xhr.responseText);
               
    }};
-
     let data = '{"range_start":' + currentIndex + "," + '"insert_before":' +  randomIndex + "," + '"range_length":2}';
     xhr.send(data);
     };
-    alert("Playlist successfully shuffled!");
+    if(xhr.status == 429){
+        alert("Too many requests");
+    }
     }
         
     let generateRandomString = function(length) {
-        var text = '';
-        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let text = '';
+        let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     
-        for (var i = 0; i < length; i++) {
+        for (let i = 0; i < length; i++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
         return text;
@@ -111,6 +115,7 @@ $(document).ready(function () {
                 $('#login-menu').hide();
                 $('#loggedin').show();
                 user_id = response.id;
+                userName = response.display_name;
                 getPlaylists();
             }
         });
