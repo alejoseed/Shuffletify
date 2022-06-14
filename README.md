@@ -7,7 +7,7 @@ Creates a random playlist based on a previously created list of songs
 ## Why should I use it:
 
 Usually the Spotify shuffle button tends to not be as consistent and repeat many songs from the same artist, I decided to use the Fisher-Yates algorithm to
-effiently organize the playlist in a more consistently aleatory way
+efficiently organize the playlist in a more consistently aleatory way
 
 ### What technologies were used:
 
