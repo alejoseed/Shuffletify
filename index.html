@@ -7,7 +7,7 @@
     <title>Shuffletify</title>
     <link rel="stylesheet" href="style.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="script.js"></script>
 
 </head>
@@ -16,7 +16,9 @@
     <div class="flex-container">
         <div id ="login-menu">
             <div class="main-logo">
-                <img src="images/spotifylogo.png" alt="spotify-logo" width="50px" height="50px">
+                <a href="http://127.0.0.1:5500/index.html">
+                    <img src="images/spotifylogo.png" alt="spotify-logo" width="50px" height="50px">
+                </a>
             </div>
             <div class="header-section">
                 <h1>Shuffletify</h1>
@@ -29,7 +31,9 @@
         
         <div id="loggedin" style="display: none;">
             <div class="main-logo">
-                <img src="images/spotifylogo.png" alt="spotify-logo" width="50px" height="50px">
+                <a href="http://127.0.0.1:5500/index.html">
+                    <img src="images/spotifylogo.png" alt="spotify-logo" width="50px" height="50px">
+                </a>
             </div>
             <div class="header-section">
                 <h1>Shuffletify</h1>
@@ -43,9 +47,13 @@
                     <div id="shuffle-playlist">
                         <a id="shuffle-btn">Shuffle the playlist!</a>
                     </div>
-                    
                 </div>
             </div>
+            <h4>Progress: </h4>
+            <div id="progress">
+                <div id="progressBar">0%</div>
+            </div>
+            
         </div>
 
         <p>Created by: <a>Alejandro Palmar</a> </p>
