@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function () {   
     let stateKey = 'spotify_auth_state';
     let user_id = "";
     const AUTHORIZE = "https://accounts.spotify.com/authorize";
@@ -6,7 +6,7 @@ $(document).ready(function () {
     let playlist_id = "";
     let playlist_index = null;
     let userName = "";
-   
+
     function getHashParams(){
         let hashParams = {};
         let e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -41,7 +41,6 @@ $(document).ready(function () {
     }
 
     // Save the playlist the user wanna shuffle and get the ID
-
     document.getElementById("shuffle-btn").addEventListener("click", function(){
         console.log($("#playlist-options option:selected").text());
         for(let i = 0; i < playlists.length; i++){
@@ -53,39 +52,55 @@ $(document).ready(function () {
         }
         shufflePlaylist();
     });
+    // Create a bar to track progress for long playlists
+    function moveBar(totalSongs, currentIndex) {
+        if(totalSongs > 0) {
+            let currentPercentage = ((currentIndex / totalSongs) * 100).toFixed(2);
+            console.log(currentPercentage);
+            let elem = document.getElementById("progressBar");
+            elem.style.width = currentPercentage + "%";
+            elem.innerHTML = currentPercentage + "%";
+            width = currentPercentage;
+        }
+    }
 
-    // Decided to use xhr instead of $.ajax because it was a simplier way to get the result
-    // of the request.
+
+    // To prevent API Rate limit, I used a promise with await
+    const wait = ms => new Promise(
+        (resolve, reject) => setTimeout(resolve, ms)
+      );
 
     function shufflePlaylist(){
         let currentIndex = playlists[playlist_index].tracks.total, randomIndex;
-        while (0 !== currentIndex) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex --;
-            let url = "https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks";
-            
-            
-            let xhr = new XMLHttpRequest();
-            xhr.open("PUT", url);
-            
-            xhr.setRequestHeader("Accept", "application/json");
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-            
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                console.log(xhr.status);
-                console.log(xhr.responseText);
-              
-   }};
-    let data = '{"range_start":' + currentIndex + "," + '"insert_before":' +  randomIndex + "," + '"range_length":2}';
-    xhr.send(data);
-    };
-    if(xhr.status == 429){
-        alert("Too many requests");
-    }
-    }
-        
+        // Index to keep track of the percentange of the progress bar
+        i = 0;
+        const main = async () => {
+            while (0 !== currentIndex) {
+                moveBar(playlists[playlist_index].tracks.total, i);  
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex --;
+                fetch('https://api.spotify.com/v1/playlists/' + playlist_id + '/tracks', {
+                    method: 'PUT',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': "Bearer " + access_token
+                    },
+                    body: JSON.stringify({
+                        'range_start': currentIndex,
+                        'insert_before': randomIndex + 1,
+                        'range_length': 2
+                    })
+                });
+                await wait(100);
+                i++;
+                if(currentIndex === 0){
+                    moveBar(playlists[playlist_index].tracks.total, playlists[playlist_index].tracks.total);
+                    alert("Shuffle done!");}
+                }
+        }
+        main();
+        }
     let generateRandomString = function(length) {
         let text = '';
         let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
