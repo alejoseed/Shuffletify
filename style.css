@@ -154,5 +154,22 @@ select {
   color: black 
 }
 
+#progress {
+  display: flex;
+  flex-basis: 100%;
+  margin: auto;
+  align-items: center;
+  text-align: center;
+  line-height: 30px;
+  max-width: 405px;
+  align-items: center;
+  width: 100%;
+  background-color: grey;
+}
 
+#progressBar {
+  width: 0%;
+  height: 30px;
+  background-color: green;
+}
 
