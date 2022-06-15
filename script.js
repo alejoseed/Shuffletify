@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     function getPlaylists(){
         $.ajax({
-            url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
+            url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists' + '?' + 'limit=1000',
             headers: {
                 'Authorization': 'Bearer ' + access_token
             },
