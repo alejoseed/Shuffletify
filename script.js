@@ -25,9 +25,8 @@ $(document).ready(function () {
             },
             success: function(response) {
                 playlists = response.items;
-                console.log(playlists.length);
                 console.log(playlists);
-                if(playlists.length > 0 || playlists.length <= 50){
+                if(playlists.length > 0){
                     let select = document.getElementById("playlist-options");
                     for (let i = 0; i < playlists.length; i++) {
                         let option = document.createElement("option");
@@ -39,7 +38,6 @@ $(document).ready(function () {
                 }
                 }
                 if(playlists.length >= 50){
-                    console.log("Executed");
                     $.ajax({
                         url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists?limit=50&offset=50',
                         headers: {
