@@ -19,25 +19,51 @@ $(document).ready(function () {
 
     function getPlaylists(){
         $.ajax({
-            url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists',
+            url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists?limit=50',
             headers: {
                 'Authorization': 'Bearer ' + access_token
             },
             success: function(response) {
                 playlists = response.items;
+                console.log(playlists.length);
                 console.log(playlists);
-                let select = document.getElementById("playlist-options");
-                for (let i = 0; i < playlists.length; i++) {
-                    let option = document.createElement("option");
-                    //check the onwer of the playlist to display only modifiable playlists
-                    if (playlists[i].owner.id == user_id || playlists[i].collaborative == true || playlists[i].owner == userName) {
-                        option.text = playlists[i].name;
-                        select.add(option, 0)
-                    }
-            }
+                if(playlists.length > 0 || playlists.length <= 50){
+                    let select = document.getElementById("playlist-options");
+                    for (let i = 0; i < playlists.length; i++) {
+                        let option = document.createElement("option");
+                        //check the onwer of the playlist to display only modifiable playlists
+                        if (playlists[i].owner.id == user_id || playlists[i].collaborative == true || playlists[i].owner == userName) {
+                            option.text = playlists[i].name;
+                            select.add(option, 0)
+                        }
+                }
+                }
+                if(playlists.length >= 50){
+                    console.log("Executed");
+                    $.ajax({
+                        url: 'https://api.spotify.com/v1/users/' + user_id + '/playlists?limit=50&offset=50',
+                        headers: {
+                            'Authorization': 'Bearer ' + access_token
+                        },
+                        success: function(response) {
+                            playlists = response.items;
+                            console.log(playlists);
+                            if(playlists.length > 0 || playlists.length <= 50){
+                                let select = document.getElementById("playlist-options");
+                                for (let i = 0; i < playlists.length; i++) {
+                                    let option = document.createElement("option");
+                                    //check the onwer of the playlist to display only modifiable playlists
+                                    if (playlists[i].owner.id == user_id || playlists[i].collaborative == true || playlists[i].owner == userName) {
+                                        option.text = playlists[i].name;
+                                        select.add(option, 0)
+                                    }
+                            }
+                            }
+                        }
+                    });
+                }
             }
         });
-
     }
 
     // Save the playlist the user wanna shuffle and get the ID
