@@ -11,7 +11,7 @@ efficiently organize the playlist in a more consistently aleatory way
 
 ### What technologies were used:
 
-I used plain CSS and HTML, as well as Express.JS and Node.js to explore the possibilities of a more simplistic project
+I used plain CSS and HTML, as well as Node.js to explore the possibilities of a more simplistic project
 
 Contact me:
 
