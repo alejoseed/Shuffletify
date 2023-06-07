@@ -11,7 +11,7 @@ efficiently organize the playlist in a more consistently aleatory way
 
 ### What technologies were used:
 
-I used plain CSS and HTML, as well as JQuery to explore the possibilities of a more simplistic project without frameworks
+I used plain CSS and HTML, as well as JQuery 
 
 Contact me:
 
